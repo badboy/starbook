@@ -20,9 +20,13 @@ impl Preprocessor for Starbook {
             }
 
             if let BookItem::Chapter(ref mut chapter) = *item {
-                res = Some(Starbook::process(chapter).map(|md| {
-                    chapter.content = md;
-                }));
+                if let Some(ext) = chapter.path.extension() {
+                    if ext == "txt" {
+                        res = Some(Starbook::process(chapter).map(|md| {
+                            chapter.content = md;
+                        }));
+                    }
+                }
             }
         });
 
